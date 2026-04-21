@@ -1,497 +1,279 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lean Windows 11 Gaming Install — RTX 5090 / 4K240</title>
-<style>
-:root{
-  --bg:#f4f1ea;
-  --paper:#fbfaf7;
-  --ink:#111111;
-  --muted:#66625b;
-  --line:#d6d0c5;
-  --accent:#111111;
-  --soft:#ece7dd;
-  --good:#dfe9dd;
-  --warn:#f0e7d8;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-body{line-height:1.35}
-.topbar{
-  position:sticky; top:0; z-index:50; background:rgba(244,241,234,.94); backdrop-filter: blur(8px);
-  border-bottom:1px solid var(--line); padding:14px 24px; display:flex; justify-content:space-between; align-items:center;
-}
-.topbar .small{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
-.topbar .title{font-size:14px; font-weight:600}
-.deck{max-width:1280px;margin:0 auto;padding:24px}
-.slide{
-  min-height:100vh; background:var(--paper); border:1px solid var(--line); margin:0 0 24px 0; padding:42px 44px 36px 44px;
-  display:flex; flex-direction:column; justify-content:flex-start; position:relative;
-}
-.slide::before{
-  content:""; position:absolute; left:24px; top:24px; width:64px; height:3px; background:var(--ink);
-}
-.meta{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:18px; padding-top:8px}
-.kicker{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
-.index{font-size:12px; color:var(--muted)}
-h1,h2,h3{margin:0}
-h2{font-size:48px; line-height:1.02; letter-spacing:-0.03em; max-width:900px; margin-bottom:26px}
-h3{font-size:20px; line-height:1.1; margin-bottom:10px}
-p{font-size:18px; margin:0 0 14px 0; max-width:980px}
-.lead{font-size:22px; max-width:980px}
-ul,ol{margin:0; padding-left:20px}
-li{margin:0 0 8px 0; font-size:18px}
-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.92em}
-.two-col,.grid-2,.source-columns{display:grid; gap:24px; grid-template-columns:1fr 1fr}
-.compact ul li{font-size:17px}
-.decision{display:grid; gap:16px; grid-template-columns:repeat(3,1fr)}
-.decision-card{
-  border:1px solid var(--line); padding:18px; background:white; min-height:240px;
-}
-.decision-card.good{background:var(--good)}
-.label{font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin-bottom:12px}
-.note,.warning,.foot{font-size:15px; color:var(--muted); max-width:980px}
-.warning{background:var(--warn); padding:10px 12px; border-left:3px solid var(--ink); display:inline-block}
-.checklist{display:grid; gap:14px}
-.checklist .item{display:grid; grid-template-columns:64px 1fr; gap:16px; align-items:flex-start; border-top:1px solid var(--line); padding-top:14px}
-.checklist .item span{font-size:28px; line-height:1; color:var(--muted)}
-.checklist .item p{margin:4px 0 0 0; font-size:16px; color:var(--muted)}
-.timeline{display:grid; gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
-.timeline > div{display:grid; grid-template-columns:220px 1fr; gap:24px; padding:16px 0; border-top:1px solid var(--line)}
-.timeline > div:first-child{border-top:0}
-.codeblock{
-  background:#111; color:#f2f2f2; padding:18px; overflow:auto; margin:10px 0 16px 0; border:1px solid #000;
-}
-.codeblock pre{margin:0; white-space:pre-wrap; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:15px; line-height:1.45}
-.spec-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px}
-.spec-grid > div{background:var(--soft); border:1px solid var(--line); padding:16px}
-.spec-grid span{display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px}
-.spec-grid strong{font-size:22px}
-.bad-list{display:grid; gap:10px}
-.bad-list > div{padding:12px 14px; border:1px solid var(--line); background:white}
-.verify-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px 24px}
-.verify-grid label{display:flex; gap:12px; align-items:flex-start; font-size:18px; padding:10px 0; border-top:1px solid var(--line)}
-.verify-grid input{margin-top:4px; width:18px; height:18px}
-.source-columns li{font-size:17px}
-.footer-nav{
-  position:fixed; right:20px; bottom:20px; background:rgba(17,17,17,.92); color:white; padding:10px 14px; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
-}
-@media (max-width: 980px){
-  .slide{padding:32px 24px 28px 24px}
-  h2{font-size:34px}
-  p,li{font-size:16px}
-  .lead{font-size:19px}
-  .two-col,.grid-2,.source-columns,.decision,.verify-grid,.spec-grid{grid-template-columns:1fr}
-  .timeline > div{grid-template-columns:1fr}
-}
-@media print{
-  .topbar,.footer-nav{display:none}
-  .slide{page-break-after:always; min-height:auto}
-  body{background:white}
-}
-</style>
-</head><body>
-<div class="topbar"><div><div class="small">Swiss-style HTML presentation</div><div class="title">Lean Windows 11 Gaming Install — RTX 5090 / 4K240</div></div><div class="small">Arrow keys / J K</div></div>
-<main class="deck">
-<section class="slide">
-<div class="meta"><div class="kicker">Windows 11 Gaming Workflow</div><div class="index">01</div></div>
-<h2>Lean Windows 11 install for a dedicated gaming machine</h2>
+<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Lean Windows 11 Gaming Install — Iteration 2</title><style>:root{--bg:#f4f1ea;--paper:#fbfaf7;--ink:#111;--muted:#66625b;--line:#d6d0c5;--soft:#ece7dd;--warn:#f0e7d8}*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}body{line-height:1.35}.topbar{position:sticky;top:0;z-index:50;background:rgba(244,241,234,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;justify-content:space-between;align-items:center}.topbar .small{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.topbar .title{font-size:14px;font-weight:600}.deck{max-width:1320px;margin:0 auto;padding:24px}.slide{min-height:100vh;background:var(--paper);border:1px solid var(--line);margin:0 0 24px 0;padding:42px 44px 36px 44px;position:relative}.slide::before{content:"";position:absolute;left:24px;top:24px;width:64px;height:3px;background:var(--ink)}.meta{display:flex;justify-content:space-between;gap:20px;margin-bottom:18px;padding-top:8px}.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}.index{font-size:12px;color:var(--muted)}h2{margin:0 0 26px 0;font-size:48px;line-height:1.02;letter-spacing:-0.03em;max-width:920px}h3{margin:0 0 10px 0;font-size:20px}p{font-size:18px;margin:0 0 14px 0;max-width:1000px}.lead{font-size:22px}ul,ol{margin:0;padding-left:20px}li{margin:0 0 8px 0;font-size:18px}.two-col,.grid-2{display:grid;gap:24px;grid-template-columns:1fr 1fr}.compact li{font-size:17px}.checklist{display:grid;gap:14px}.checklist .item{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:flex-start;border-top:1px solid var(--line);padding-top:14px}.checklist .item span{font-size:28px;line-height:1;color:var(--muted)}.checklist .item p{margin:4px 0 0 0;font-size:16px;color:var(--muted)}.codeblock{background:#111;color:#f2f2f2;padding:18px;overflow:auto;margin:10px 0 16px 0;border:1px solid #000}.codeblock pre{margin:0;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.45}.bad-list{display:grid;gap:10px}.bad-list>div{padding:12px 14px;border:1px solid var(--line);background:white}.footer-nav{position:fixed;right:20px;bottom:20px;background:rgba(17,17,17,.92);color:white;padding:10px 14px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}@media (max-width:980px){.slide{padding:32px 24px 28px 24px}h2{font-size:34px}p,li{font-size:16px}.lead{font-size:19px}.two-col,.grid-2{grid-template-columns:1fr}}</style></head><body><div class='topbar'><div><div class='small'>Swiss-style HTML presentation</div><div class='title'>Lean Windows 11 Gaming Install — Iteration 2</div></div><div class='small'>Arrow keys / J K</div></div><main class='deck'><section class='slide' id='slide-1'><div class='meta'><div class='kicker'>Purpose</div><div class='index'>01</div></div><h2>Iteration 2: copy-paste first, verification second</h2><p class="lead">This version turns most of the post-install actions into directly runnable PowerShell or console invocations, then adds a verification pass that reports <strong>PASS/FAIL</strong> for the intended end state.</p><div class="two-col"><div><p><strong>Files in this bundle</strong></p><ul><li><code>win11-lean-apply.ps1</code></li><li><code>win11-lean-verify.ps1</code></li><li>this HTML presentation</li></ul></div><div><p><strong>Still manual</strong></p><ul><li>NVIDIA App sign-in choices</li><li>Steam login and Steam Cloud account state</li><li>VR runtime pairing</li><li>game-specific HDR / VRR / Reflex / FG validation</li></ul></div></div></section><section class='slide' id='slide-2'><div class='meta'><div class='kicker'>Workflow</div><div class='index'>02</div></div><h2>Execution order</h2><div class="checklist"><div class="item"><span>01</span><div><strong>Install Windows from the official ISO</strong><p>No pre-stripped image.</p></div></div><div class="item"><span>02</span><div><strong>Install board drivers and NVIDIA App</strong><p>Do not run cleanup before the device is fundamentally stable.</p></div></div><div class="item"><span>03</span><div><strong>Run the apply script as Administrator</strong><p>It writes policy keys, removes selected AppX packages, disables Spooler, and sets Edge policies.</p></div></div><div class="item"><span>04</span><div><strong>Reboot</strong><p>Policy-backed changes need a restart to settle fully.</p></div></div><div class="item"><span>05</span><div><strong>Run the verify script as Administrator</strong><p>It returns a machine-readable PASS/FAIL style table and exits non-zero on failure.</p></div></div></div></section><section class='slide' id='slide-3'><div class='meta'><div class='kicker'>Bootstrap</div><div class='index'>03</div></div><h2>One-time bootstrap commands</h2><div class="codeblock"><pre># Open elevated PowerShell, then allow this session to run local scripts only
+Set-ExecutionPolicy -Scope Process Bypass -Force
 
-        <p class="lead">Target state: official Windows 11 install, local-account-first, aggressively cleaned after setup, with <strong>NVIDIA App</strong>, <strong>Steam</strong>, <strong>MSI Afterburner</strong>, VR support, Epic, Battle.net, and Star Citizen compatibility preserved.</p>
-        <div class="two-col">
-          <div>
-            <p><strong>Constraints locked in</strong></p>
-            <ul>
-              <li>Official ISO path first</li>
-              <li>Reversible aggressive debloat</li>
-              <li>Security updates kept</li>
-              <li>Telemetry reduced, compatibility first</li>
-              <li>Local account preferred</li>
-              <li>Steam Cloud stays enabled</li>
-            </ul>
-          </div>
-          <div>
-            <p><strong>End state</strong></p>
-            <ul>
-              <li>No Copilot / Recall / widgets / ads</li>
-              <li>No OneDrive / Phone Link / Xbox app / Game Bar</li>
-              <li>No Edge background tasks</li>
-              <li>No system notifications</li>
-              <li>No printer stack by default</li>
-              <li>4K 240Hz + VRR + HDR + FG + Reflex validated</li>
-            </ul>
-          </div>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Decision</div><div class="index">02</div></div>
-<h2>Chosen base path</h2>
+# Optional: inspect current power plans
+powercfg /LIST
 
-        <div class="decision">
-          <div class="decision-card good">
-            <div class="label">Chosen</div>
-            <h3>Official Windows 11 ISO + unattended local-account-first OOBE + post-install cleanup</h3>
-            <p>Best fit for compatibility with launchers, VR runtimes, anti-cheat, driver updates, and future servicing.</p>
-          </div>
-          <div class="decision-card">
-            <div class="label">Rejected</div>
-            <h3>LTSC</h3>
-            <p>Less aligned with mainstream gaming desktop expectations, Store/UI assumptions, and consumer ecosystem fit.</p>
-          </div>
-          <div class="decision-card">
-            <div class="label">Rejected</div>
-            <h3>NTLite / custom ISO</h3>
-            <p>Higher chance of broken servicing, AppX behavior, repair installs, setup, upgrades, or obscure launcher/runtime failures.</p>
-          </div>
-        </div>
-        <p class="note">This keeps the servicing stack intact and avoids pre-stripping components that later matter to Windows repair, feature updates, launchers, VR runtimes, or anti-cheat.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Phase 0</div><div class="index">03</div></div>
-<h2>Prepare before install</h2>
+# Optional: inspect current AppX inventory
+Get-AppxPackage -AllUsers | Sort-Object Name | Select-Object Name, PackageFullName
 
-        <div class="checklist">
-          <div class="item"><span>01</span><div><strong>Download official Windows 11 media only</strong><p>Use the official ISO or Media Creation Tool path.</p></div></div>
-          <div class="item"><span>02</span><div><strong>Update BIOS/UEFI to latest stable</strong><p>Do not start from an unstable firmware baseline.</p></div></div>
-          <div class="item"><span>03</span><div><strong>Set firmware baseline</strong><p>UEFI only, CSM off, Secure Boot on, TPM on, ReBAR on if supported.</p></div></div>
-          <div class="item"><span>04</span><div><strong>Delay aggressive memory tuning</strong><p>Apply EXPO/XMP only after the OS is stable if compatibility is the hard priority.</p></div></div>
-          <div class="item"><span>05</span><div><strong>Pre-stage essential drivers</strong><p>Chipset, LAN/Wi-Fi, storage driver packages on a second USB if needed.</p></div></div>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Phase 1</div><div class="index">04</div></div>
-<h2>Build a local-account-first installer</h2>
+# Optional: inspect provisioned packages for new users
+Get-AppxProvisionedPackage -Online | Sort-Object DisplayName | Select-Object DisplayName, PackageName</pre></div></section><section class='slide' id='slide-4'><div class='meta'><div class='kicker'>Apply</div><div class='index'>04</div></div><h2>Single-command apply path</h2><p class="lead">Save the following file as <code>win11-lean-apply.ps1</code>, then run it elevated.</p><div class="codeblock"><pre>#Requires -RunAsAdministrator
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
-        <p class="lead">Use an unattended answer file only to control OOBE and create the first local admin account. Do not alter the ISO beyond that.</p>
-        <div class="codeblock"><pre>&lt;OOBE&gt;
-  &lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;
-  &lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;
-&lt;/OOBE&gt;
+function Write-Step($msg) { Write-Host "==&gt; $msg" -ForegroundColor Cyan }
+function Ensure-Key($path) {
+  if (-not (Test-Path $path)) { New-Item -Path $path -Force | Out-Null }
+}
 
-&lt;UserAccounts&gt;
-  &lt;LocalAccounts&gt;
-    &lt;LocalAccount action="add"&gt;...&lt;/LocalAccount&gt;
-  &lt;/LocalAccounts&gt;
-&lt;/UserAccounts&gt;</pre></div>
-        <ul>
-          <li>Save the file as <code>Autounattend.xml</code></li>
-          <li>Place it in the root of the installer USB</li>
-          <li>Prefer network disconnected during OOBE</li>
-          <li>Result: first boot lands on a local account, not a Microsoft account</li>
-        </ul>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Phase 2</div><div class="index">05</div></div>
-<h2>Install Windows without pre-stripping it</h2>
+Write-Step "Creating policy keys"
+$keys = @(
+  'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI',
+  'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot',
+  'HKLM:\SOFTWARE\Policies\Microsoft\Dsh',
+  'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent',
+  'HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR',
+  'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications',
+  'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications',
+  'HKLM:\SOFTWARE\Policies\Microsoft\Edge'
+)
+$keys | ForEach-Object { Ensure-Key $_ }
 
-        <div class="timeline">
-          <div><strong>Boot installer</strong><p>Use the official media. No custom image presets.</p></div>
-          <div><strong>Complete setup</strong><p>Use the unattended local-account-first flow.</p></div>
-          <div><strong>First desktop</strong><p>Stay offline until base drivers are in if practical.</p></div>
-          <div><strong>Install board drivers first</strong><p>Chipset, storage, LAN/Wi-Fi.</p></div>
-          <div><strong>Install GPU stack second</strong><p>NVIDIA App and current GeForce driver.</p></div>
-        </div>
-        <p class="warning">Do not use “lite” images, pre-removed WinSxS/component presets, or registry optimizer packs here.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Phase 3</div><div class="index">06</div></div>
-<h2>Run the cleanup pass after first boot</h2>
+Write-Step "Disabling Recall / AI-related features"
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name 'AllowRecallEnablement' -PropertyType DWord -Value 0 -Force | Out-Null
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name 'DisableAIDataAnalysis' -PropertyType DWord -Value 1 -Force | Out-Null
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' -Name 'DisableClickToDo' -PropertyType DWord -Value 1 -Force | Out-Null
 
-        <p class="lead">Use policy-backed disablement plus selective AppX removal. Avoid dismantling the servicing stack.</p>
-        <div class="grid-2">
-          <div>
-            <h3>Disable or remove</h3>
-            <ul>
-              <li>Copilot / Recall / AI features</li>
-              <li>Widgets / Spotlight / consumer features / recommendations</li>
-              <li>OneDrive</li>
-              <li>Xbox app / Game Bar / Game DVR</li>
-              <li>Phone Link</li>
-              <li>Edge background mode / Startup Boost</li>
-              <li>System notifications</li>
-              <li>Printer spooler</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Keep</h3>
-            <ul>
-              <li>Windows servicing and update path</li>
-              <li>Steam and Steam Cloud</li>
-              <li>SteamVR and headset runtime</li>
-              <li>Epic launcher</li>
-              <li>Battle.net</li>
-              <li>RSI Launcher / Star Citizen</li>
-              <li>Core OS repairability</li>
-            </ul>
-          </div>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Registry and policy</div><div class="index">07</div></div>
-<h2>High-value changes</h2>
+Write-Step "Disabling Copilot"
+New-ItemProperty 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot' -Name 'TurnOffWindowsCopilot' -PropertyType DWord -Value 1 -Force | Out-Null
 
-        <div class="codeblock"><pre># Recall / Windows AI
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI" /v AllowRecallEnablement /t REG_DWORD /d 0 /f
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI" /v DisableAIDataAnalysis /t REG_DWORD /d 1 /f
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI" /v DisableClickToDo /t REG_DWORD /d 1 /f
+Write-Step "Disabling Widgets and consumer experiences"
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh' -Name 'AllowNewsAndInterests' -PropertyType DWord -Value 0 -Force | Out-Null
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent' -Name 'DisableWindowsConsumerFeatures' -PropertyType DWord -Value 1 -Force | Out-Null
 
-# Copilot pane
-reg add "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f
+Write-Step "Disabling Game DVR policy"
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR' -Name 'AllowGameDVR' -PropertyType DWord -Value 0 -Force | Out-Null
+
+Write-Step "Suppressing toast and cloud notifications"
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications' -Name 'NoCloudApplicationNotification' -PropertyType DWord -Value 1 -Force | Out-Null
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications' -Name 'NoToastApplicationNotification' -PropertyType DWord -Value 1 -Force | Out-Null
+New-ItemProperty 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications' -Name 'NoToastApplicationNotification' -PropertyType DWord -Value 1 -Force | Out-Null
+
+Write-Step "Disabling Edge background mode and startup boost"
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'BackgroundModeEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
+New-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Name 'StartupBoostEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
+
+Write-Step "Removing OneDrive"
+$oneDriveSetup = Join-Path $env:SystemRoot 'System32\OneDriveSetup.exe'
+if (Get-Process OneDrive -ErrorAction SilentlyContinue) { Stop-Process -Name OneDrive -Force }
+if (Test-Path $oneDriveSetup) { &amp; $oneDriveSetup /uninstall }
+
+Write-Step "Removing Xbox / Phone Link packages for installed users"
+$packages = @(
+  'Microsoft.YourPhone',
+  'Microsoft.GamingApp',
+  'Microsoft.XboxGamingOverlay'
+)
+foreach ($pkg in $packages) {
+  Get-AppxPackage -Name $pkg -AllUsers -ErrorAction SilentlyContinue | ForEach-Object {
+    try { Remove-AppxPackage -Package $_.PackageFullName -AllUsers -ErrorAction Stop } catch {}
+  }
+}
+
+Write-Step "Removing provisioned packages so new users do not inherit them"
+$provisionedPatterns = @(
+  'Microsoft.YourPhone',
+  'Microsoft.GamingApp',
+  'Microsoft.XboxGamingOverlay'
+)
+foreach ($pattern in $provisionedPatterns) {
+  Get-AppxProvisionedPackage -Online |
+    Where-Object { $_.DisplayName -like "*$pattern*" } |
+    ForEach-Object {
+      try { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -AllUsers -ErrorAction Stop | Out-Null } catch {}
+    }
+}
+
+Write-Step "Disabling Print Spooler"
+if (Get-Service Spooler -ErrorAction SilentlyContinue) {
+  Stop-Service Spooler -Force -ErrorAction SilentlyContinue
+  Set-Service Spooler -StartupType Disabled
+}
+
+Write-Step "Applying common gaming-friendly power plan preference"
+powercfg /LIST
+
+Write-Step "Done. Reboot required for all policy/app changes to settle."
+</pre></div><div class="codeblock"><pre># Run it
+PowerShell -ExecutionPolicy Bypass -File .\win11-lean-apply.ps1</pre></div></section><section class='slide' id='slide-5'><div class='meta'><div class='kicker'>Policies</div><div class='index'>05</div></div><h2>Direct registry invocations if you want them line-by-line</h2><div class="codeblock"><pre># Recall / Windows AI
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsAI" /v AllowRecallEnablement /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsAI" /v DisableAIDataAnalysis /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsAI" /v DisableClickToDo /t REG_DWORD /d 1 /f
+
+# Copilot
+reg add "HKCU\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f
 
 # Widgets / consumer experiences
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh" /v DisableWidgetsBoard /t REG_DWORD /d 1 /f
-reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent" /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f</pre></div>
-        <p class="note">Use policy-backed controls where Microsoft documents them. Only use package removal for the app families you explicitly do not want.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">App removal</div><div class="index">08</div></div>
-<h2>Selective removal commands</h2>
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f
 
-        <div class="codeblock"><pre># OneDrive
+# Game DVR / Game Bar capture policy
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /v AllowGameDVR /t REG_DWORD /d 0 /f
+
+# Toast / cloud notifications
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoCloudApplicationNotification /t REG_DWORD /d 1 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoToastApplicationNotification /t REG_DWORD /d 1 /f
+reg add "HKCU\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v NoToastApplicationNotification /t REG_DWORD /d 1 /f
+
+# Edge background mode / startup boost
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v BackgroundModeEnabled /t REG_DWORD /d 0 /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v StartupBoostEnabled /t REG_DWORD /d 0 /f</pre></div></section><section class='slide' id='slide-6'><div class='meta'><div class='kicker'>Apps</div><div class='index'>06</div></div><h2>Direct AppX / service removal commands</h2><div class="codeblock"><pre># OneDrive
 taskkill /f /im OneDrive.exe
-%SystemRoot%\\System32\\OneDriveSetup.exe /uninstall
+%SystemRoot%\System32\OneDriveSetup.exe /uninstall
 
-# Phone Link / Xbox / Game Bar
-Get-AppxPackage Microsoft.YourPhone | Remove-AppxPackage
-Get-AppxPackage Microsoft.GamingApp | Remove-AppxPackage
-Get-AppxPackage Microsoft.XboxGamingOverlay | Remove-AppxPackage
+# Phone Link / Xbox app / Game Bar for installed users
+Get-AppxPackage -AllUsers -Name Microsoft.YourPhone | Remove-AppxPackage -AllUsers
+Get-AppxPackage -AllUsers -Name Microsoft.GamingApp | Remove-AppxPackage -AllUsers
+Get-AppxPackage -AllUsers -Name Microsoft.XboxGamingOverlay | Remove-AppxPackage -AllUsers
 
-Get-AppxProvisionedPackage -Online | ? DisplayName -like "*Microsoft.YourPhone*" | Remove-AppxProvisionedPackage -Online -AllUsers
-Get-AppxProvisionedPackage -Online | ? DisplayName -like "*Microsoft.GamingApp*" | Remove-AppxProvisionedPackage -Online -AllUsers
-Get-AppxProvisionedPackage -Online | ? DisplayName -like "*Microsoft.XboxGamingOverlay*" | Remove-AppxProvisionedPackage -Online -AllUsers
+# Remove those packages from the provisioned image for future users
+Get-AppxProvisionedPackage -Online | ? DisplayName -like "*Microsoft.YourPhone*" | % { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -AllUsers }
+Get-AppxProvisionedPackage -Online | ? DisplayName -like "*Microsoft.GamingApp*" | % { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -AllUsers }
+Get-AppxProvisionedPackage -Online | ? DisplayName -like "*Microsoft.XboxGamingOverlay*" | % { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -AllUsers }
 
 # Print spooler
 Stop-Service Spooler -Force
-Set-Service Spooler -StartupType Disabled</pre></div>
-        <p class="warning">App removals can return after major feature updates. Treat them as a re-apply step, not a one-time permanent state.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">GPU stack</div><div class="index">09</div></div>
-<h2>NVIDIA App is mandatory — use it, then add Afterburner</h2>
+Set-Service Spooler -StartupType Disabled</pre></div></section><section class='slide' id='slide-7'><div class='meta'><div class='kicker'>Required apps</div><div class='index'>07</div></div><h2>Post-cleanup installs that remain intentionally present</h2><div class="codeblock"><pre># Desired retained state:
+# - NVIDIA App installed
+# - Steam installed
+# - MSI Afterburner installed
+# - Epic Games Launcher installed if needed
+# - Battle.net installed if needed
+# - SteamVR / headset runtime installed if needed
+# - Star Citizen launcher installed if needed</pre></div></section><section class='slide' id='slide-8'><div class='meta'><div class='kicker'>Verify</div><div class='index'>08</div></div><h2>Single-command verification path</h2><p class="lead">Save this as <code>win11-lean-verify.ps1</code>. It prints a table and exits <code>1</code> if any assertion fails.</p><div class="codeblock"><pre>#Requires -RunAsAdministrator
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
-        <div class="two-col">
-          <div>
-            <h3>Install order</h3>
-            <ol>
-              <li>NVIDIA App</li>
-              <li>Current GeForce driver through the app</li>
-              <li>Verify display path</li>
-              <li>Install MSI Afterburner</li>
-              <li>Add RTSS only if required</li>
-            </ol>
-          </div>
-          <div>
-            <h3>Why this order</h3>
-            <ul>
-              <li>NVIDIA App owns driver delivery</li>
-              <li>Afterburner owns manual voltage/frequency tuning</li>
-              <li>Lower chance of layering conflicts</li>
-              <li>Keeps your mandatory NVIDIA App requirement intact</li>
-            </ul>
-          </div>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">GPU tuning</div><div class="index">10</div></div>
-<h2>Conservative 5090-class undervolt baseline</h2>
-
-        <div class="spec-grid">
-          <div><span>Power limit</span><strong>90%</strong></div>
-          <div><span>Temp limit</span><strong>Default</strong></div>
-          <div><span>Memory clock</span><strong>+0</strong></div>
-          <div><span>V/F anchor</span><strong>0.925 V @ 2700 MHz</strong></div>
-        </div>
-        <ul>
-          <li>Flatten the curve to the right of the 925 mV point</li>
-          <li>Test in raster, RT + frame generation, then VR</li>
-          <li>If unstable: 0.925 V @ 2655 MHz, or 0.950 V @ 2700–2775 MHz</li>
-          <li>Rollback: Afterburner <strong>Reset</strong>, disable apply-at-startup, reboot</li>
-        </ul>
-        <p class="note">This is a conservative starting point, not a guaranteed universal target.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Display path</div><div class="index">11</div></div>
-<h2>Validate the actual gaming output path</h2>
-
-        <div class="checklist">
-          <div class="item"><span>01</span><div><strong>Set 3840×2160 @ 240 Hz</strong><p>Confirm in Windows Advanced Display and, if available, the panel OSD.</p></div></div>
-          <div class="item"><span>02</span><div><strong>Enable HDR</strong><p>Use Windows HDR settings. Calibrate if needed.</p></div></div>
-          <div class="item"><span>03</span><div><strong>Enable G-Sync / VRR</strong><p>Use NVIDIA Control Panel and verify with the G-Sync indicator.</p></div></div>
-          <div class="item"><span>04</span><div><strong>Leave HAGS on initially</strong><p>Do not start with folklore tweaks. Validate first.</p></div></div>
-          <div class="item"><span>05</span><div><strong>Enable Reflex / FG per title</strong><p>Use in-game support where available; do not assume a global forcing strategy works equally well.</p></div></div>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Launchers and runtimes</div><div class="index">12</div></div>
-<h2>Install only what the machine needs</h2>
-
-        <div class="grid-2 compact">
-          <div>
-            <h3>Required</h3>
-            <ul>
-              <li>Steam</li>
-              <li>SteamVR + headset runtime</li>
-              <li>Epic Games Launcher</li>
-              <li>Battle.net</li>
-              <li>RSI Launcher / Star Citizen</li>
-              <li>VC++ and DirectX runtimes as launcher/game installers require</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Explicitly retained</h3>
-            <ul>
-              <li>Steam Cloud</li>
-              <li>VR runtime support</li>
-              <li>Anti-cheat compatibility</li>
-              <li>Standard Windows repair/update behavior</li>
-            </ul>
-          </div>
-        </div>
-        <p class="warning">Do not pre-emptively cripple Windows security or anti-cheat-related behavior. Fix the specific title only when it reproduces a problem.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Tweaks discipline</div><div class="index">13</div></div>
-<h2>What not to do</h2>
-
-        <div class="bad-list">
-          <div>Do not use a heavily stripped custom ISO</div>
-          <div>Do not rip out WinSxS/component servicing</div>
-          <div>Do not apply blanket anti-cheat “fixes” pre-emptively</div>
-          <div>Do not disable updates entirely</div>
-          <div>Do not install RGB/OEM suites unless they materially improve stability or firmware management</div>
-          <div>Do not chase timer/HPET/MPO folklore before you have a reproducible problem</div>
-        </div>
-        <p class="note">Compatibility was your top priority. The workflow reflects that.</p>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Rollback</div><div class="index">14</div></div>
-<h2>Minimal rollback posture</h2>
-
-        <div class="grid-2 compact">
-          <div>
-            <h3>Safe reversals</h3>
-            <ul>
-              <li>Delete policy keys added by cleanup script</li>
-              <li>Re-enable Print Spooler</li>
-              <li>Reset Afterburner profile</li>
-              <li>Reinstall removed Store apps if later needed</li>
-            </ul>
-          </div>
-          <div>
-            <h3>High-cost rollback</h3>
-            <ul>
-              <li>Custom ISO mistakes usually mean reinstall</li>
-              <li>Deep component stripping breaks easy recovery</li>
-              <li>This is why the workflow avoids them</li>
-            </ul>
-          </div>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Final verification</div><div class="index">15</div></div>
-<h2>Machine passes only when all boxes are checked</h2>
-
-        <div class="verify-grid">
-          <label><input type="checkbox"> Official ISO used</label>
-          <label><input type="checkbox"> Local account created at install</label>
-          <label><input type="checkbox"> Cleanup pass applied and rebooted</label>
-          <label><input type="checkbox"> NVIDIA App installed and driver current</label>
-          <label><input type="checkbox"> 4K 240Hz confirmed</label>
-          <label><input type="checkbox"> HDR enabled and validated</label>
-          <label><input type="checkbox"> G-Sync / VRR enabled and confirmed</label>
-          <label><input type="checkbox"> Steam installed</label>
-          <label><input type="checkbox"> Steam Cloud still enabled</label>
-          <label><input type="checkbox"> SteamVR + headset runtime tested</label>
-          <label><input type="checkbox"> Epic / Battle.net / RSI Launcher installed</label>
-          <label><input type="checkbox"> Star Citizen storage + page file checked</label>
-          <label><input type="checkbox"> Afterburner installed</label>
-          <label><input type="checkbox"> Undervolt tested in raster, RT+FG, and VR</label>
-        </div>
-        
-</section>
-<section class="slide">
-<div class="meta"><div class="kicker">Sources</div><div class="index">16</div></div>
-<h2>Research base</h2>
-
-        <p class="lead">The presentation was derived from the completed research report and anchored on Microsoft documentation for exact policy/registry mappings, plus launcher/runtime/vendor docs for compatibility boundaries.</p>
-        <div class="source-columns">
-          <div>
-            <h3>Core documentation</h3>
-            <ul>
-              <li>Microsoft Windows 11 download and unattended setup docs</li>
-              <li>Microsoft Recall / Windows AI / Widgets / Cloud Content / Start policy docs</li>
-              <li>Microsoft AppX and DISM package servicing docs</li>
-              <li>NVIDIA App, G-Sync, DLSS, Reflex, Blackwell architecture material</li>
-              <li>MSI Afterburner documentation</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Compatibility docs</h3>
-            <ul>
-              <li>Steam and Steam Cloud docs</li>
-              <li>SteamVR docs</li>
-              <li>Epic launcher and Easy Anti-Cheat docs</li>
-              <li>Battle.net desktop app and troubleshooting docs</li>
-              <li>RSI / Star Citizen requirements, page file, anti-cheat, and overlay docs</li>
-            </ul>
-          </div>
-        </div>
-        <p class="foot">The underlying research also surveyed custom-image and stripping approaches, then rejected them for this machine because they lose too much compatibility and recovery margin relative to the gain.</p>
-        
-</section>
-</main>
-<div class="footer-nav" id="footerIndex">1 / 1</div>
-<script>
-document.querySelectorAll('.slide').forEach((slide, i) => {
-  slide.setAttribute('id', 'slide-' + (i+1));
-});
-let idx = 1;
-const total = document.querySelectorAll('.slide').length;
-const footer = document.getElementById('footerIndex');
-function setFooter(){ footer.textContent = idx + ' / ' + total; }
-setFooter();
-
-function goTo(n){
-  const el = document.getElementById('slide-' + n);
-  if(!el) return;
-  idx = n;
-  setFooter();
-  el.scrollIntoView({behavior:'smooth', block:'start'});
+function Test-RegValue {
+  param(
+    [string]$Path,
+    [string]$Name,
+    [object]$Expected
+  )
+  try {
+    $actual = (Get-ItemProperty -Path $Path -Name $Name -ErrorAction Stop).$Name
+    [pscustomobject]@{
+      Type='Registry'
+      Target="$Path :: $Name"
+      Expected=$Expected
+      Actual=$actual
+      Pass=($actual -eq $Expected)
+    }
+  } catch {
+    [pscustomobject]@{
+      Type='Registry'
+      Target="$Path :: $Name"
+      Expected=$Expected
+      Actual='&lt;missing&gt;'
+      Pass=$false
+    }
+  }
 }
 
-window.addEventListener('keydown', (e) => {
-  if(e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === 'j'){
-    goTo(Math.min(total, idx + 1));
+function Test-AppMissing {
+  param([string]$Name)
+  $installed = @(Get-AppxPackage -AllUsers -Name $Name -ErrorAction SilentlyContinue)
+  $provisioned = @(Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -like "*$Name*" })
+  [pscustomobject]@{
+    Type='AppX'
+    Target=$Name
+    Expected='Absent for installed users and absent from provisioned packages'
+    Actual="Installed=$($installed.Count); Provisioned=$($provisioned.Count)"
+    Pass=($installed.Count -eq 0 -and $provisioned.Count -eq 0)
   }
-  if(e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'k'){
-    goTo(Math.max(1, idx - 1));
-  }
-});
+}
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      const m = entry.target.id.match(/slide-(\d+)/);
-      if(m){ idx = parseInt(m[1], 10); setFooter(); }
+function Test-ServiceDisabled {
+  param([string]$Name)
+  $svc = Get-CimInstance Win32_Service -Filter "Name='$Name'" -ErrorAction SilentlyContinue
+  if (-not $svc) {
+    return [pscustomobject]@{
+      Type='Service'
+      Target=$Name
+      Expected='Disabled'
+      Actual='&lt;missing&gt;'
+      Pass=$false
     }
-  });
-}, {threshold: 0.55});
+  }
+  [pscustomobject]@{
+    Type='Service'
+    Target=$Name
+    Expected='State=Stopped/StartMode=Disabled'
+    Actual="State=$($svc.State); StartMode=$($svc.StartMode)"
+    Pass=($svc.StartMode -eq 'Disabled')
+  }
+}
 
-document.querySelectorAll('.slide').forEach(slide => observer.observe(slide));
-</script>
-</body></html>
+function Test-DesktopApp {
+  param([string]$Pattern)
+  $paths = @(
+    'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*',
+    'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*',
+    'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*'
+  )
+  $hits = foreach ($p in $paths) {
+    Get-ItemProperty $p -ErrorAction SilentlyContinue | Where-Object {
+      $_.DisplayName -like "*$Pattern*"
+    } | Select-Object -ExpandProperty DisplayName
+  }
+  [pscustomobject]@{
+    Type='DesktopApp'
+    Target=$Pattern
+    Expected='Installed'
+    Actual=($hits -join '; ')
+    Pass=($hits.Count -gt 0)
+  }
+}
+
+function Test-DisplayState {
+  $vc = Get-CimInstance Win32_VideoController | Select-Object -First 1
+  [pscustomobject]@{
+    Type='Display'
+    Target='Primary video controller'
+    Expected='3840x2160 and 240 Hz'
+    Actual="$($vc.CurrentHorizontalResolution)x$($vc.CurrentVerticalResolution) @ $($vc.CurrentRefreshRate)Hz"
+    Pass=($vc.CurrentHorizontalResolution -eq 3840 -and $vc.CurrentVerticalResolution -eq 2160 -and $vc.CurrentRefreshRate -eq 240)
+  }
+}
+
+$results = @()
+
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' 'AllowRecallEnablement' 0
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' 'DisableAIDataAnalysis' 1
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI' 'DisableClickToDo' 1
+$results += Test-RegValue 'HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot' 'TurnOffWindowsCopilot' 1
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Dsh' 'AllowNewsAndInterests' 0
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent' 'DisableWindowsConsumerFeatures' 1
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR' 'AllowGameDVR' 0
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications' 'NoCloudApplicationNotification' 1
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications' 'NoToastApplicationNotification' 1
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'BackgroundModeEnabled' 0
+$results += Test-RegValue 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' 'StartupBoostEnabled' 0
+
+$results += Test-AppMissing 'Microsoft.YourPhone'
+$results += Test-AppMissing 'Microsoft.GamingApp'
+$results += Test-AppMissing 'Microsoft.XboxGamingOverlay'
+$results += Test-ServiceDisabled 'Spooler'
+
+$results += Test-DesktopApp 'NVIDIA App'
+$results += Test-DesktopApp 'Steam'
+$results += Test-DesktopApp 'MSI Afterburner'
+
+$results += Test-DisplayState
+
+$results | Sort-Object Type, Target | Format-Table -AutoSize
+
+$failed = @($results | Where-Object { -not $_.Pass })
+if ($failed.Count -gt 0) {
+  Write-Host ""
+  Write-Host "FAILED CHECKS: $($failed.Count)" -ForegroundColor Red
+  $failed | Format-Table -AutoSize
+  exit 1
+} else {
+  Write-Host ""
+  Write-Host "ALL CHECKS PASSED" -ForegroundColor Green
+  exit 0
+}
+</pre></div><div class="codeblock"><pre># Run it
+PowerShell -ExecutionPolicy Bypass -File .\win11-lean-verify.ps1</pre></div></section><section class='slide' id='slide-9'><div class='meta'><div class='kicker'>What is actually verified</div><div class='index'>09</div></div><h2>Programmatic assertions</h2><div class="grid-2 compact"><div><h3>Registry / policy state</h3><ul><li>Recall disabled</li><li>Recall snapshots disabled</li><li>Click to Do disabled</li><li>Copilot disabled</li><li>Widgets disabled at policy level</li><li>Consumer experiences disabled</li><li>Game DVR disabled</li><li>Toast/cloud notifications suppressed</li><li>Edge background mode and startup boost disabled</li></ul></div><div><h3>Packages / runtime state</h3><ul><li>Phone Link absent</li><li>Xbox app absent</li><li>Xbox Game Bar overlay absent</li><li>Print Spooler disabled</li><li>NVIDIA App present</li><li>Steam present</li><li>MSI Afterburner present</li><li>Primary display reports 3840×2160 @ 240 Hz</li></ul></div></div></section><section class='slide' id='slide-10'><div class='meta'><div class='kicker'>Limits</div><div class='index'>10</div></div><h2>Verification limits you should understand</h2><div class="bad-list"><div>Steam Cloud account state is not robustly verifiable with one generic OS-level command; keep that as a launcher-side manual check.</div><div>HDR, VRR/G-Sync, Reflex, and frame generation are partly driver and game-path conditions; verify them in NVIDIA Control Panel and in-game overlays.</div><div>VR runtime health is headset-specific. Keep a headset smoke-test in the final checklist.</div><div>The display assertion uses Windows video controller state. Multi-monitor or DSC edge cases can require a manual cross-check in Advanced Display.</div></div></section><section class='slide' id='slide-11'><div class='meta'><div class='kicker'>Source map</div><div class='index'>11</div></div><h2>What these commands are grounded in</h2><ul><li>AppX cmdlets and provisioned-package servicing</li><li>Windows AI / Recall / Copilot policy mappings</li><li>Widgets and consumer-experience policy mappings</li><li>Game DVR policy mapping</li><li>Push notification policy mappings</li><li>Edge background mode and startup boost policy mappings</li><li>Service control and scheduled task cmdlets</li><li>WMI video controller properties for refresh rate and resolution</li></ul></section></main><div class='footer-nav' id='footerIndex'>1 / 1</div><script>let idx=1;const total=document.querySelectorAll('.slide').length;const footer=document.getElementById('footerIndex');function setFooter(){footer.textContent=idx+' / '+total;} setFooter();function goTo(n){const el=document.getElementById('slide-'+n);if(!el)return;idx=n;setFooter();el.scrollIntoView({behavior:'smooth',block:'start'});}window.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight'||e.key==='PageDown'||e.key==='j')goTo(Math.min(total,idx+1));if(e.key==='ArrowLeft'||e.key==='PageUp'||e.key==='k')goTo(Math.max(1,idx-1));});const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){const m=entry.target.id.match(/slide-(\d+)/);if(m){idx=parseInt(m[1],10);setFooter();}}});},{threshold:0.55});document.querySelectorAll('.slide').forEach(slide=>observer.observe(slide));</script></body></html>
